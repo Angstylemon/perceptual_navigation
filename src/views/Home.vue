@@ -1,5 +1,5 @@
 <template>
-  <div id="screen">
+  <div class="screen">
     <StartButton
       v-if="!start"
       x="50%" 
@@ -8,8 +8,9 @@
     />
     <StaticTrial
       v-else
-      x="200px"
-      y="200px"
+      x="0px"
+      y="0px"
+      v-on:finish="endTrial"
     />
   </div>
 </template>
@@ -32,16 +33,24 @@ export default {
   methods: {
     startTrial() {
       this.start = true;
+    },
+    endTrial() {
+      this.start = false;
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#screen {
-  width: 600px;
-  height: 600px;
+.screen {
   background-color: black;
-  position: relative;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  max-height: 600px;
+  
+  flex: 1 0 100%;
+  display: flex;
 }
 </style>

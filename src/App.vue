@@ -8,6 +8,7 @@
 *, *::before, *::after {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 #root {
@@ -15,15 +16,20 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+
   color: #2c3e50;
+  background-color: rgb(20, 20, 20);
+
   min-height: 100vh;
   min-width: 100vw;
   max-height: 100vh;
   max-width: 100vw;
-  background-color: rgb(20, 20, 20);
+
   display: flex;
   justify-content: center;
   align-items: center;
+  align-content: stretch;
   overflow: hidden;
+  position: relative;
 }
 </style>
