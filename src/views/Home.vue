@@ -1,18 +1,47 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="screen">
+    <StartButton
+      v-if="!start"
+      x="50%" 
+      y="50%"
+      v-on:click="startTrial"
+    />
+    <StaticTrial
+      v-else
+      x="200px"
+      y="200px"
+    />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import StartButton from '../components/StartButton.vue';
+import StaticTrial from '../components/StaticTrial.vue';
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    StartButton,
+    StaticTrial
+  },
+  data() { 
+    return {
+      start: false,
+    }
+  },
+  methods: {
+    startTrial() {
+      this.start = true;
+    }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+#screen {
+  width: 600px;
+  height: 600px;
+  background-color: black;
+  position: relative;
+}
+</style>
