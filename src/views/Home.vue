@@ -2,14 +2,13 @@
   <div class="screen">
     <StartButton
       v-if="!start"
-      x="50%" 
-      y="50%"
+      :x="startX" 
+      :y="startY"
       v-on:click="startTrial"
     />
     <StaticTrial
       v-else
-      x="0px"
-      y="0px"
+      duration="10"
       v-on:finish="endTrial"
     />
   </div>
@@ -28,6 +27,8 @@ export default {
   data() { 
     return {
       start: false,
+      startX: "50%",
+      startY: "50%",
     }
   },
   methods: {
