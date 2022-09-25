@@ -8,25 +8,27 @@
       :y="startY"
       v-on:click="startTrial"
     />
-    <component v-else 
-      :is="trialType"
-      :duration="trialDuration"
-      :activationRange="activationRange"
-      v-on:finish="endTrial"
-      v-on:activate="activate"
-    ></component>
-    <!-- <CircleMovingTrial
-      v-else
-      :duration="20"
-      v-on:finish="endTrial"
-      v-on:activate="activate"
-    /> -->
-    <!-- <StaticTrial
-      v-else
+    <StaticTrial
+    v-if="startTrial && trialType == 'StaticTrial'"
       :duration="10"
+      :activationRange="200"
       v-on:finish="endTrial"
       v-on:activate="activate"
-    /> -->
+    />
+    <CircleMovingTrial
+      v-if="startTrial && trialType == 'CircleMovingTrial'"
+      :duration="20"
+      :activationRange="200"
+      v-on:finish="endTrial"
+      v-on:activate="activate"
+    />
+    <SquareMovingTrial
+      v-if="startTrial && trialType == 'SquareMovingTrial'"
+      :duration="40"
+      :activationRange="100"
+      v-on:finish="endTrial"
+      v-on:activate="activate"
+    />
   </div>
 </template>
 
@@ -51,7 +53,6 @@ export default {
       startX: "50%",
       startY: "50%",
       activationValue: 0,
-      activationRange: 150,
     }
   },
   methods: {
