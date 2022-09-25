@@ -1,8 +1,5 @@
 <template>
-  <div 
-    class="background"
-    :style="{ 'background-color' : `rgb(${activationValue * 255}, 0, 0)` }"  
-  >
+  <div class="background">
     <div 
       class="target"
       ref="target"
@@ -31,7 +28,6 @@ export default {
       animationCycle: null,
       targetX: 0,
       targetY: 0,
-      activationValue: 0,
     }
   },
   mounted() {
@@ -63,46 +59,37 @@ export default {
     },
     animationFrame() {
       const target = this.$refs['target'].getBoundingClientRect();
-      const distance_to_target = this.calculateDistance({x: target.x, y: target.y}, {x: this.mouseX, y: this.mouseY});
-      const relative_distance = distance_to_target/this.activationRange;
+      const distanceToTarget = this.calculateDistance({x: target.x, y: target.y}, {x: this.mouseX, y: this.mouseY});
+      const relativeDistance = distanceToTarget/this.activationRange;
 
-      this.activationValue = this.activate(relative_distance);
-    },
-    activate(x) {
-      // tanh prime activation                                
-      const z = x * 2.5;                                                       
-                                                                                  
-      const tanh = (Math.exp(z) - Math.exp(-z)) / (Math.exp(z) + Math.exp(-z));
-      const tanh_prime = 1 - Math.pow(tanh, 2);                                
-                                                                                  
-      return tanh_prime;                                                 
-    },                                                                          
+      this.$emit('activate', relativeDistance);
+    },                                                                       
     calculateDistance(p1, p2) {
       let x_diff = p2.x - p1.x;
       let y_diff = p2.y - p1.y;
 
-      let sqaure_diff = x_diff * x_diff + y_diff * y_diff;
-      let diff = Math.sqrt(sqaure_diff);
+      let sqaureDiff = x_diff * x_diff + y_diff * y_diff;
+      let diff = Math.sqrt(sqaureDiff);
 
       return diff;
     },
     generateRandomOffset(border) {
-      const random_val = Math.random();
-      const random_within_range = random_val * (1 - 2*border);
-      const random_with_offset = random_within_range + border;
+      const randomVal = Math.random();
+      const randomWithinRange = randomVal * (1 - 2*border);
+      const randomWithOffset = randomWithinRange + border;
       
-      let signed_random = random_with_offset;
+      let signedRandom = randomWithOffset;
 
       if (Math.random() > 0.5) {
-        signed_random *= -1;
+        signedRandom *= -1;
       }
 
       // Offset is from centre of screen, i.e. 50%
       // signed_random contains a scaled random value
       // and is either positive or negative
-      const final_offset = 50*(1 + signed_random);
+      const finalOffset = 50*(1 + signedRandom);
 
-      return final_offset;
+      return finalOffset;
     }
   }
 }
@@ -113,7 +100,7 @@ export default {
 .background {
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: transparent;
   position: relative;
 }
 

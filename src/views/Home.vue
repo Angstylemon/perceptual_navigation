@@ -1,5 +1,7 @@
 <template>
-  <div class="screen">
+  <div class="screen"
+    :style="{ 'background-color' : start ? `rgb(${activationValue * 255}, 0, 0)` : 'black' }"  
+  >
     <StartButton
       v-if="!start"
       :x="startX" 
@@ -8,8 +10,9 @@
     />
     <StaticTrial
       v-else
-      duration="10"
+      :duration="10"
       v-on:finish="endTrial"
+      v-on:activate="activate"
     />
   </div>
 </template>
@@ -29,15 +32,29 @@ export default {
       start: false,
       startX: "50%",
       startY: "50%",
+      activationValue: 0,
     }
   },
   methods: {
     startTrial() {
+      this.activationValue = 0;
       this.start = true;
     },
     endTrial() {
       this.start = false;
-    }
+    },
+    activate(x) {
+      // tanh prime activation                                
+      const z = x * 2.5;                                                       
+                                                                                  
+      const tanh = (Math.exp(z) - Math.exp(-z)) / (Math.exp(z) + Math.exp(-z));
+      const tanhPrime = 1 - Math.pow(tanh, 2);                                
+                                                                                  
+      this.activationValue = tanhPrime;
+
+      console.log(this.activationValue);
+
+    },  
   }
 }
 </script>
