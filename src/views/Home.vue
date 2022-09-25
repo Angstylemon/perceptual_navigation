@@ -11,6 +11,7 @@
     <component v-else 
       :is="trialType"
       :duration="trialDuration"
+      :activationRange="activationRange"
       v-on:finish="endTrial"
       v-on:activate="activate"
     ></component>
@@ -33,21 +34,24 @@
 import StartButton from '../components/StartButton.vue';
 import StaticTrial from '../components/StaticTrial.vue';
 import CircleMovingTrial from '../components/CircleMovingTrial.vue';
+import SquareMovingTrial from '../components/SquareMovingTrial.vue';
 
 export default {
   name: 'Home',
   components: {
     StartButton,
     StaticTrial,
-    CircleMovingTrial
+    CircleMovingTrial,
+    SquareMovingTrial
 },
   data() { 
     return {
       start: false,
-      trialType: "CircleMovingTrial",
+      trialType: "SquareMovingTrial",
       startX: "50%",
       startY: "50%",
       activationValue: 0,
+      activationRange: 150,
     }
   },
   methods: {
@@ -76,6 +80,8 @@ export default {
         duration = 10;
       } else if (this.trialType == "CircleMovingTrial") {
         duration = 20;
+      } else if (this.trialType == "SquareMovingTrial") {
+        duration = 40;
       }
 
       return duration;
