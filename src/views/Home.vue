@@ -8,28 +8,43 @@
       :y="startY"
       v-on:click="startTrial"
     />
-    <StaticTrial
+    <component v-else 
+      :is="trialType"
+      :duration="trialDuration"
+      v-on:finish="endTrial"
+      v-on:activate="activate"
+    ></component>
+    <!-- <CircleMovingTrial
+      v-else
+      :duration="20"
+      v-on:finish="endTrial"
+      v-on:activate="activate"
+    /> -->
+    <!-- <StaticTrial
       v-else
       :duration="10"
       v-on:finish="endTrial"
       v-on:activate="activate"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import StartButton from '../components/StartButton.vue';
 import StaticTrial from '../components/StaticTrial.vue';
+import CircleMovingTrial from '../components/CircleMovingTrial.vue';
 
 export default {
   name: 'Home',
   components: {
     StartButton,
-    StaticTrial
-  },
+    StaticTrial,
+    CircleMovingTrial
+},
   data() { 
     return {
       start: false,
+      trialType: "CircleMovingTrial",
       startX: "50%",
       startY: "50%",
       activationValue: 0,
@@ -51,10 +66,20 @@ export default {
       const tanhPrime = 1 - Math.pow(tanh, 2);                                
                                                                                   
       this.activationValue = tanhPrime;
-
-      console.log(this.activationValue);
-
     },  
+  },
+  computed: {
+    trialDuration() {
+      let duration = 0;
+
+      if (this.trialType == "StaticTrial") {
+        duration = 10;
+      } else if (this.trialType == "CircleMovingTrial") {
+        duration = 20;
+      }
+
+      return duration;
+    }
   }
 }
 </script>

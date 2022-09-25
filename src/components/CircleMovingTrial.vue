@@ -2,13 +2,17 @@
   <div 
     class="target"
     ref="target"
-    :style="{ 'left' : targetX, 'top' : targetY }"
+    :style="{ 
+      'left' : `${targetX}%`, 
+      'top' : `${targetY}%`,
+      'transform-origin' : `${xOffset}px ${yOffset}px`
+    }"
   ></div>
 </template>
 
 <script>
 export default {
-  name: 'StaticTrial',
+  name: 'CircleMovingTrial',
   props: {
     duration: {
       type: Number,
@@ -26,13 +30,16 @@ export default {
       animationCycle: null,
       targetX: 0,
       targetY: 0,
+      xOffset: 0,
+      yOffset: 0,
     }
   },
   mounted() {
     // Generate target position
-    const border = 0.15;
-    this.targetX = this.generateRandomOffset(border)+"%";
-    this.targetY = this.generateRandomOffset(border)+"%";
+    const border = 0.25;
+    this.targetX = this.generateRandomOffset(border);
+    this.targetY = this.generateRandomOffset(border);
+    this.translateOrigin = this.calculateOrigin();
 
     // Setup trial functionality
     document.addEventListener('mousemove', this.mousemoveHandler);
@@ -88,6 +95,22 @@ export default {
       const finalOffset = 50*(1 + signedRandom);
 
       return finalOffset;
+    },
+    calculateOrigin() {
+      const height = this.$parent.$el.scrollHeight;
+      const width = this.$parent.$el.scrollWidth;
+
+      const xCentre = width * 0.5;
+      const yCentre = height * 0.5;
+
+      const xTarget = width * this.targetX/100;
+      const yTarget = height * this.targetY/100;
+
+      const xDiff = xCentre - xTarget;
+      const yDiff = yCentre - yTarget;
+
+      this.xOffset = xDiff;
+      this.yOffset = yDiff;
     }
   }
 }
@@ -102,5 +125,20 @@ export default {
   position: absolute;
   transform: translate(-50%, -50%);
   background-color: white;
+
+  animation-name: target-animate;
+  animation-duration: 15s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  transform-origin: 50% 50%;
+}
+
+@keyframes target-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
 }
 </style>
