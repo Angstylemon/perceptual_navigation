@@ -4,7 +4,7 @@
   >
     <StartButton
       v-if="!start"
-      :x="startX" 
+      :x="startX"
       :y="startY"
       v-on:click="startTrial"
     />
